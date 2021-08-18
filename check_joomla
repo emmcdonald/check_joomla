@@ -17,7 +17,7 @@
  *
  **/
 
-$CJ_VERSION='0.6';
+$CJ_VERSION='0.7';
 
 $shortopts = "V::v::c::p:h";
 $longopts = array("verbose::", "version::", "critical::", "path:");
@@ -124,7 +124,7 @@ if(isset($RELEASE) && isset($DEV_LEVEL)) {
     }
     $specific = $RELEASE.".".$DEV_LEVEL;
     foreach($update_file->children() as $extension) {
-        if($extension['targetplatformversion'] == $specific) {
+        if(version_compare($extension['targetplatformversion'],$specific) == 0) {
             echo "Joomla update available. Installed version: $specific. Can be updated to ".$extension['version']."\n";
             if(isset($options['c']) || isset($options['critical'])) {
                 exit(2);
@@ -138,7 +138,7 @@ if(isset($RELEASE) && isset($DEV_LEVEL)) {
         echo "Nothing specific found. Checking if your \$DEV_LEVEL needs an update...\n";
     }
     foreach($update_file->children() as $extension) {
-        if($extension['targetplatformversion'] == $RELEASE) {
+        if(version_compare($extension['targetplatformversion'],$RELEASE) == 0) {
             if(version_compare($extension['version'], $specific) > 0) {
                 echo "Joomla update available. Installed version: $RELEASE.$DEV_LEVEL. Can be updated to ".$extension['version']."\n";
                 exit(1);
